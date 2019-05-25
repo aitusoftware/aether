@@ -1,0 +1,116 @@
+plugins {
+    id 'net.minecrell.licenser' version '0.4.1' apply false
+    id 'java'
+}
+apply plugin: 'java'
+def aetherVersion = file('version.txt').text.trim()
+group = 'com.aitusoftware'
+version = aetherVersion
+
+defaultTasks 'build'
+
+ext {
+    fullName = 'Aether'
+    fullDescription = 'Aether: Monitoring for Aeron'
+    teamName = 'Aitu Software Limited'
+    siteUrl = 'https://github.com/aitusoftware/aether'
+    sourceUrl = 'https://github.com/aitusoftware/aether.git'
+
+    javaCompilerExecutable = System.env['JAVA_HOME'] ? System.env['JAVA_HOME'] + '/bin/javac' : 'javac'
+    if (!project.hasProperty('sonatypeUrl')) sonatypeUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
+    if (!project.hasProperty('sonatypeUsername')) sonatypeUsername = ''
+    if (!project.hasProperty('sonatypePassword')) sonatypePassword = ''
+}
+
+def projectPom = {
+    name = fullName
+    description = fullDescription
+    url = siteUrl
+    packaging = 'pom'
+
+    scm {
+        url = "$sourceUrl"
+        connection = "scm:git:https://github.com/aitusoftware.com/recall.git"
+        developerConnection = "scm:git:https://github.com/aitusoftware.com/recall.git"
+    }
+
+    licenses {
+        license {
+            name = 'The Apache Software License, Version 2.0'
+            url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            distribution = 'repo'
+        }
+    }
+
+    developers {
+        developer {
+            id = 'epickrram'
+            name = 'Mark Price'
+            email = 'recall@aitusoftware.com'
+        }
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+apply plugin: 'checkstyle'
+apply plugin: 'signing'
+apply plugin: 'maven'
+apply plugin: 'net.minecrell.licenser'
+
+test {
+    useJUnitPlatform()
+}
+
+checkstyle {
+    toolVersion = '8.20'
+}
+
+license {
+    header = new File(rootDir, 'config/header.txt')
+    newLine = false
+}
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+artifacts {
+    archives sourcesJar, javadocJar
+}
+
+javadoc {
+}
+
+signing {
+    required { gradle.taskGraph.hasTask('uploadArchives') }
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories.mavenDeployer {
+        beforeDeployment { deployment -> signing.signPom(deployment) }
+
+        repository(url: sonatypeUrl) {
+            authentication(userName: sonatypeUsername, password: sonatypePassword)
+        }
+
+        pom.project(projectPom)
+    }
+}
+
+dependencies {
+    checkstyle 'com.puppycrawl.tools:checkstyle:8.20'
+    compile 'io.aeron:aeron-driver:1.18.0'
+    compile 'org.agrona:agrona:1.0.0'
+
+    testCompile 'com.google.truth:truth:0.42'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.3.2'
+    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.3.2'
+}
