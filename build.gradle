@@ -7,7 +7,7 @@ def aetherVersion = file('version.txt').text.trim()
 group = 'com.aitusoftware'
 version = aetherVersion
 
-defaultTasks 'build'
+defaultTasks 'clean', 'build'
 
 ext {
     fullName = 'Aether'
