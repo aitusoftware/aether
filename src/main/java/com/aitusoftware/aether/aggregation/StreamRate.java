@@ -130,6 +130,10 @@ public final class StreamRate
                 accumulator += segmentDelta;
                 count++;
             }
+            if (count == 0)
+            {
+                return 0;
+            }
             return accumulator / count;
         }
     }
