@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Aitu Software Limited.
+ * Copyright 2019-2020 Aitu Software Limited.
  *
  * https://aitusoftware.com
  *
