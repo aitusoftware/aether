@@ -107,8 +107,8 @@ uploadArchives {
 
 dependencies {
     checkstyle 'com.puppycrawl.tools:checkstyle:8.33'
-    compile 'io.aeron:aeron-driver:1.28.2'
-    compile 'org.agrona:agrona:1.5.1'
+    compile 'io.aeron:aeron-driver:1.29.0'
+    compile 'org.agrona:agrona:1.6.0'
 
     testCompile 'com.google.truth:truth:0.42'
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.6.2'
