@@ -1,3 +1,5 @@
+[![Build Status](https://circleci.com/gh/aitusoftware/aether.svg?style=svg)](https://circleci.com/gh/aitusoftware/aether)
+
 # Aether
 
 Monitoring for the [Aeron](https://github.com/real-logic/aeron) messaging system.
