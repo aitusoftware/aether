@@ -107,7 +107,7 @@ uploadArchives {
 
 dependencies {
     checkstyle 'com.puppycrawl.tools:checkstyle:8.36.2'
-    compile 'io.aeron:aeron-driver:1.30.0'
+    compile 'io.aeron:aeron-driver:1.34.0'
     compile 'org.agrona:agrona:1.7.2'
 
     testCompile 'com.google.truth:truth:0.42'
